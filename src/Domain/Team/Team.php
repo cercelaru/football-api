@@ -3,8 +3,9 @@
 namespace FootballApi\Domain\Team;
 
 use FootballApi\Domain\League\League;
+use JsonSerializable;
 
-class Team
+class Team implements JsonSerializable
 {
 
     /** @var int $id */
@@ -101,5 +102,12 @@ class Team
         $this->league = $league;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'name' => $this->name
+        ];
     }
 }

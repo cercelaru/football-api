@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GetTeamsInLeagueRequestValidator
 {
+
     private $leagueRepository;
 
     public function __construct(LeagueRepositoryInterface $leagueRepository)
@@ -14,12 +15,14 @@ class GetTeamsInLeagueRequestValidator
         $this->leagueRepository = $leagueRepository;
     }
 
-    public function getValidRequestParameters(Request $request)
+    public function getValidRequestParameters(Request $request): array
     {
         $leagueId = $request->get('leagueId');
 
         $league = $this->leagueRepository->findOneById($leagueId);
 
-        echo $league->getName();die('aaa');
+        return [
+            'league' => $league
+        ];
     }
 }

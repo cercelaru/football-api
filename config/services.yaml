@@ -43,6 +43,7 @@ services:
         class: FootballApi\Application\Symfony\Controller\LeaguesController
         arguments:
             - '@football-api.request-validator.get-teams-in-league'
+            - '@football-api.query.bus'
 
     football-api.request-validator.get-teams-in-league:
         class: FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator
@@ -52,4 +53,20 @@ services:
     football-api.repository.league:
         class: FootballApi\Infrastructure\Persistence\Doctrine\LeagueRepository
         factory: ['@doctrine.orm.entity_manager', getRepository]
-        arguments: [ 'FootballApi\Domain\League\League' ]
+        arguments: ['FootballApi\Domain\League\League']
+
+    football-api.repository.team:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\TeamRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['FootballApi\Domain\Team\Team']
+
+    football-api.query.bus:
+        class: FootballApi\Infrastructure\Query\QueryBus
+        arguments:
+            - '@service_container'
+
+    FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor:
+        class: FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor
+        arguments:
+           - '@football-api.repository.team'
+
