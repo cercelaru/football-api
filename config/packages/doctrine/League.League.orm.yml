@@ -1,0 +1,22 @@
+FootballApi\Domain\League\League:
+  type: entity
+  table: leagues
+  uniqueConstraints:
+    name_idx:
+      columns: [ name ]
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 255
+      nullable: false
+  oneToMany:
+    teams:
+      targetEntity: FootballApi\Domain\Team\Team
+      mappedBy: league
+      cascade: ["persist", "merge"]
+      onDelete: CASCADE

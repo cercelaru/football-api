@@ -1,0 +1,28 @@
+FootballApi\Domain\Team\Team:
+  type: entity
+  table: teams
+  uniqueConstraints:
+    name_idx:
+      columns: [ name ]
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 255
+      nullable: false
+    strip:
+      type: string
+      length: 255
+      nullable: false
+  manyToOne:
+    league:
+      targetEntity: FootballApi\Domain\League\League
+      inversedBy: leagues
+      joinColumn:
+        name: league_id
+        referencedColumnName: id
+        nullable: false
