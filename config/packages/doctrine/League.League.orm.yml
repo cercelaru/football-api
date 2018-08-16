@@ -1,6 +1,7 @@
 FootballApi\Domain\League\League:
   type: entity
   table: leagues
+  repositoryClass: FootballApi\Infrastructure\Persistence\Doctrine\LeagueRepository
   uniqueConstraints:
     name_idx:
       columns: [ name ]

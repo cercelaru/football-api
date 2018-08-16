@@ -41,3 +41,15 @@ services:
 
     football-api.controller.leagues:
         class: FootballApi\Application\Symfony\Controller\LeaguesController
+        arguments:
+            - '@football-api.request-validator.get-teams-in-league'
+
+    football-api.request-validator.get-teams-in-league:
+        class: FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator
+        arguments:
+            - '@football-api.repository.league'
+
+    football-api.repository.league:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\LeagueRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ 'FootballApi\Domain\League\League' ]
