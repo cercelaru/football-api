@@ -61,13 +61,17 @@ class TeamsController extends Controller
         return new JsonResponse(['teams' => $teams]);
     }
 
+    /**
+     * @param Request $request
+     */
     public function createTeam(Request $request)
     {
         $requestParameters = $this->createTeamRequestValidator->getValidRequestParameters($request);
 
         $this->commandBus->handle(
             new CreateTeamCommand(
-                $requestParameters['league'], $requestParameters['teamName'],
+                $requestParameters['league'],
+                $requestParameters['teamName'],
                 $requestParameters['teamStrip']
             )
         );
