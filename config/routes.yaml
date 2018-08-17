@@ -3,3 +3,9 @@ get-teams-in-league:
     defaults:
         _controller: football-api.controller.teams::getTeamsInLeague
     methods:  [GET]
+
+create-team:
+    path: /leagues/{leagueId}/teams
+    defaults:
+        _controller: football-api.controller.teams::createTeam
+    methods:  [POST]

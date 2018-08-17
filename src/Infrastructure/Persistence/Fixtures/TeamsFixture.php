@@ -20,7 +20,7 @@ class TeamsFixture extends Fixture implements ORMFixtureInterface
             for ($j = 1; $j <= 5; $j++)
             {
                 $teamIndex = 5 * ($i-1) + $j;
-                $team = new Team($i, sprintf('Team %d', $teamIndex), sprintf('Strip %d', $teamIndex), $league);
+                $team = new Team(sprintf('Team %d', $teamIndex), sprintf('Strip %d', $teamIndex), $league, $i);
                 $manager->persist($team);
             }
 

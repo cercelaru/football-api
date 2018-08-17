@@ -24,17 +24,21 @@ class Team implements JsonSerializable
     /**
      * Team constructor.
      *
-     * @param int $id
      * @param string $name
      * @param string $strip
      * @param League $league
+     * @param int|null $id
      */
-    public function __construct(int $id, string $name, string $strip, League $league)
+    public function __construct(string $name, string $strip, League $league, int $id = null)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->strip = $strip;
         $this->league = $league;
+
+        if (null !== $id)
+        {
+            $this->id = $id;
+        }
     }
 
     /**
@@ -108,7 +112,9 @@ class Team implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'name' => $this->name
+            'id' => $this->id,
+            'name' => $this->name,
+            'strip' => $this->strip
         ];
     }
 }

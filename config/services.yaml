@@ -43,10 +43,16 @@ services:
         class: FootballApi\Application\Symfony\Controller\TeamsController
         arguments:
             - '@football-api.request-validator.get-teams-in-league'
+            - '@football-api.request-validator.create-team'
             - '@football-api.query.bus'
 
     football-api.request-validator.get-teams-in-league:
         class: FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator
+        arguments:
+            - '@football-api.repository.league'
+
+    football-api.request-validator.create-team:
+        class: FootballApi\Application\Symfony\Validator\CreateTeamRequestValidator
         arguments:
             - '@football-api.repository.league'
 

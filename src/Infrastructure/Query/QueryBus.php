@@ -28,7 +28,7 @@ class QueryBus implements QueryBusInterface
     {
         $queryClass = get_class($query);
         if (!isset($this->queryToExecutorMap[$queryClass])) {
-            throw new RuntimeException(sprintf('Cannot find handler for %s query', $queryClass));
+            throw new RuntimeException(sprintf('Cannot find executor for %s query', $queryClass));
         }
 
         $queryExecutor = $this->queryToExecutorMap[$queryClass];
