@@ -20,7 +20,7 @@ class GetTeamsInLeagueRequestValidator
     {
         $leagueId = $request->get('leagueId');
 
-        $league = $this->leagueRepository->findOneById($leagueId);
+        $league = $this->leagueRepository->findOneById((int)$leagueId);
 
         return [
             'league' => $league

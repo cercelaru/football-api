@@ -28,9 +28,7 @@ class LeaguesController extends Controller
     public function getTeamsInLeague(Request $request)
     {
         $params = $this->getTeamsInLeagueRequestValidator->getValidRequestParameters($request);
-
         $teams = $this->queryBus->execute(new GetTeamsInLeagueQuery($params['league']));
-
         return new JsonResponse($teams);
     }
 }
