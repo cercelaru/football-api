@@ -39,8 +39,8 @@ services:
         tags:
             - { name: 'doctrine.fixture.orm' }
 
-    football-api.controller.leagues:
-        class: FootballApi\Application\Symfony\Controller\LeaguesController
+    football-api.controller.teams:
+        class: FootballApi\Application\Symfony\Controller\TeamsController
         arguments:
             - '@football-api.request-validator.get-teams-in-league'
             - '@football-api.query.bus'

@@ -1,4 +1,7 @@
 {
+    "container-interop/container-interop": {
+        "version": "1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -208,5 +211,14 @@
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.1"
+    },
+    "zendframework/zend-filter": {
+        "version": "2.8.0"
+    },
+    "zendframework/zend-stdlib": {
+        "version": "3.2.0"
+    },
+    "zendframework/zend-validator": {
+        "version": "2.10.2"
     }
 }

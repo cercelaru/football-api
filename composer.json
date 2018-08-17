@@ -10,7 +10,9 @@
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
-        "symfony/yaml": "^4.1"
+        "symfony/yaml": "^4.1",
+        "zendframework/zend-filter": "^2.8",
+        "zendframework/zend-validator": "^2.10"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

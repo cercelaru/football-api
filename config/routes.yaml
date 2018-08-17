@@ -1,5 +1,5 @@
 get-teams-in-league:
     path: /leagues/{leagueId}/teams
     defaults:
-        _controller: football-api.controller.leagues::getTeamsInLeague
+        _controller: football-api.controller.teams::getTeamsInLeague
     methods:  [GET]
