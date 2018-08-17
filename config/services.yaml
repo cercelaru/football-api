@@ -63,9 +63,11 @@ services:
     football-api.query.bus:
         class: FootballApi\Infrastructure\Query\QueryBus
         arguments:
-            - '@service_container'
+            [
+              FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery: '@football-api.query-executor.get-teams-in-league'
+            ]
 
-    FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor:
+    football-api.query-executor.get-teams-in-league:
         class: FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor
         arguments:
            - '@football-api.repository.team'

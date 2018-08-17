@@ -4,30 +4,40 @@ declare(strict_types=1);
 namespace FootballApi\Infrastructure\Query;
 
 use FootballApi\Domain\Query\QueryBusInterface;
+use FootballApi\Domain\Query\QueryExecutorInterface;
 use FootballApi\Domain\Query\QueryInterface;
-use FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery;
-use FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use RuntimeException;
 
 class QueryBus implements QueryBusInterface
 {
-    private $container;
 
-    public function __construct(ContainerInterface $container)
+    /** @var array $queryToExecutorMap */
+    private $queryToExecutorMap;
+
+    /**
+     * QueryBus constructor.
+     *
+     * @param array $queryToExecutorMap
+     */
+    public function __construct(array $queryToExecutorMap)
     {
-        $this->container = $container;
+        $this->queryToExecutorMap = $queryToExecutorMap;
     }
-
-    private static $queryToHandlerMap = [
-        GetTeamsInLeagueQuery::class => GetTeamsInLeagueQueryExecutor::class
-    ];
 
     public function execute(QueryInterface $query)
     {
-        $handlerClass = self::$queryToHandlerMap[get_class($query)];
+        $queryClass = get_class($query);
+        if (!isset($this->queryToExecutorMap[$queryClass])) {
+            throw new RuntimeException(sprintf('Cannot find handler for %s query', $queryClass));
+        }
 
-        $handler = $this->container->get($handlerClass);
+        $queryExecutor = $this->queryToExecutorMap[$queryClass];
+        if (!$queryExecutor instanceof QueryExecutorInterface) {
+            throw new RuntimeException(
+                sprintf('Query executor %s must implement QueryExecutorInterface', get_class($queryExecutor))
+            );
+        }
 
-        return $handler->execute($query);
+        return $queryExecutor->execute($query);
     }
 }
