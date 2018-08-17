@@ -7,7 +7,6 @@ use FootballApi\Domain\League\LeagueRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Zend\Validator\Digits;
-use InvalidArgumentException;
 
 class CreateTeamRequestValidator
 {
@@ -35,7 +34,7 @@ class CreateTeamRequestValidator
         $leagueId = $request->get('leagueId');
         $digitsValidator = new Digits();
         if (empty($leagueId) || !$digitsValidator->isValid($leagueId)) {
-            throw new InvalidArgumentException('Provided league id is empty or invalid');
+            throw new BadRequestHttpException('Provided league id is empty or invalid');
         }
 
         $payload = json_decode($request->getContent(), true);
@@ -55,6 +54,9 @@ class CreateTeamRequestValidator
         }
 
         $league = $this->leagueRepository->findOneById((int)$leagueId);
+        if (!$league) {
+            throw new BadRequestHttpException(sprintf('League with id %d does not exist', $leagueId));
+        }
 
         return [
             'league' => $league,
