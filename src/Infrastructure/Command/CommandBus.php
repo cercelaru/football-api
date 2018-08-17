@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FootballApi\Infrastructure\Query;
+namespace FootballApi\Infrastructure\Command;
 
 use FootballApi\Domain\Command\CommandBusInterface;
+use FootballApi\Domain\Command\CommandHandlerInterface;
+use FootballApi\Domain\Command\CommandInterface;
 use RuntimeException;
 
 class CommandBus implements CommandBusInterface
@@ -22,7 +24,7 @@ class CommandBus implements CommandBusInterface
         $this->commandToHandlerMap = $commandToHandlerMap;
     }
 
-    public function execute( $command)
+    public function handle(CommandInterface $command): void
     {
         $commandClass = get_class($command);
         if (!isset($this->commandToHandlerMap[$commandClass])) {
@@ -30,12 +32,12 @@ class CommandBus implements CommandBusInterface
         }
 
         $commandHandler = $this->commandToHandlerMap[$commandClass];
-        if (!$commandHandler instanceof CommandBusInterface) {
+        if (!$commandHandler instanceof CommandHandlerInterface) {
             throw new RuntimeException(
-                sprintf('Query executor %s must implement QueryExecutorInterface', get_class($queryExecutor))
+                sprintf('Command handler %s must implement CommandHandlerInterface', get_class($commandHandler))
             );
         }
 
-        return $queryExecutor->execute($query);
+        $commandHandler->handle($command);
     }
 }

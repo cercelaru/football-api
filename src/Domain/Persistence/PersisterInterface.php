@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FootballApi\Domain\Peristence;
+namespace FootballApi\Domain\Persistence;
 
 interface PersisterInterface
 {

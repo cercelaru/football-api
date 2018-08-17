@@ -5,5 +5,5 @@ namespace FootballApi\Domain\Command;
 
 interface CommandBusInterface
 {
-    public function execute(CommandInterface $query);
+    public function handle(CommandInterface $query): void;
 }

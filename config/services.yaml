@@ -45,6 +45,7 @@ services:
             - '@football-api.request-validator.get-teams-in-league'
             - '@football-api.request-validator.create-team'
             - '@football-api.query.bus'
+            - '@football-api.command.bus'
 
     football-api.request-validator.get-teams-in-league:
         class: FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator
@@ -66,6 +67,11 @@ services:
         factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments: ['FootballApi\Domain\Team\Team']
 
+    football-api.persistence.persister:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\Persister
+        arguments:
+             - '@doctrine.orm.default_entity_manager'
+
     football-api.query.bus:
         class: FootballApi\Infrastructure\Query\QueryBus
         arguments:
@@ -73,8 +79,20 @@ services:
               FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery: '@football-api.query-executor.get-teams-in-league'
             ]
 
+    football-api.command.bus:
+        class: FootballApi\Infrastructure\Command\CommandBus
+        arguments:
+            [
+              FootballApi\Domain\Team\Command\CreateTeamCommand: '@football-api.command-handler.create-team'
+            ]
+
     football-api.query-executor.get-teams-in-league:
         class: FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor
         arguments:
            - '@football-api.repository.team'
+
+    football-api.command-handler.create-team:
+        class: FootballApi\Domain\Team\Command\CreateTeamCommandHandler
+        arguments:
+           - '@football-api.persistence.persister'
 

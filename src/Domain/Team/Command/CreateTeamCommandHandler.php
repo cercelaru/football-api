@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FootballApi\Domain\Team\Query;
+namespace FootballApi\Domain\Team\Command;
 
-use FootballApi\Domain\Peristence\PersisterInterface;
-use FootballApi\Domain\Query\CommandHandlerInterface;
-use FootballApi\Domain\Query\CommandInterface;
+use FootballApi\Domain\Command\CommandHandlerInterface;
+use FootballApi\Domain\Command\CommandInterface;
+use FootballApi\Domain\Persistence\PersisterInterface;
 use FootballApi\Domain\Team\Team;
 use LogicException;
 
@@ -34,6 +34,7 @@ class CreateTeamCommandHandler implements CommandHandlerInterface
 
         $team = new Team($command->getTeamName(), $command->getTeamStrip(), $command->getLeague());
         $this->persister->persist($team);
+        $this->persister->flush();
     }
 
     /**

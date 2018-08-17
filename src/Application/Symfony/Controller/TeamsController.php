@@ -5,7 +5,9 @@ namespace FootballApi\Application\Symfony\Controller;
 
 use FootballApi\Application\Symfony\Validator\CreateTeamRequestValidator;
 use FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator;
+use FootballApi\Domain\Command\CommandBusInterface;
 use FootballApi\Domain\Query\QueryBusInterface;
+use FootballApi\Domain\Team\Command\CreateTeamCommand;
 use FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,21 +25,27 @@ class TeamsController extends Controller
     /** @var CreateTeamRequestValidator $createTeamRequestValidator */
     private $createTeamRequestValidator;
 
+    /** @var CommandBusInterface $commandBus */
+    private $commandBus;
+
     /**
      * TeamsController constructor.
      *
      * @param GetTeamsInLeagueRequestValidator $getTeamsInLeagueRequestValidator
      * @param CreateTeamRequestValidator $createTeamRequestValidator
      * @param QueryBusInterface $queryBus
+     * @param CommandBusInterface $commandBus
      */
     public function __construct(
         GetTeamsInLeagueRequestValidator $getTeamsInLeagueRequestValidator,
         CreateTeamRequestValidator $createTeamRequestValidator,
-        QueryBusInterface $queryBus
+        QueryBusInterface $queryBus,
+        CommandBusInterface $commandBus
     ) {
         $this->getTeamsInLeagueRequestValidator = $getTeamsInLeagueRequestValidator;
         $this->createTeamRequestValidator = $createTeamRequestValidator;
         $this->queryBus = $queryBus;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -57,6 +65,12 @@ class TeamsController extends Controller
     {
         $requestParameters = $this->createTeamRequestValidator->getValidRequestParameters($request);
 
-        
+        $this->commandBus->handle(
+            new CreateTeamCommand(
+                $requestParameters['league'], $requestParameters['teamName'],
+                $requestParameters['teamStrip']
+            )
+        );
+        die('after');
     }
 }

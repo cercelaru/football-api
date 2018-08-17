@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FootballApi\Domain\Team\Query;
+namespace FootballApi\Domain\Team\Command;
 
+use FootballApi\Domain\Command\CommandInterface;
 use FootballApi\Domain\League\League;
-use FootballApi\Domain\Query\CommandInterface;
 
 class CreateTeamCommand implements CommandInterface
 {
@@ -18,14 +18,13 @@ class CreateTeamCommand implements CommandInterface
     /** @var string $teamStrip */
     private $teamStrip;
 
-    /**
-     * GetTeamsInLeagueQuery constructor.
-     *
-     * @param League $league
-     */
-    public function __construct(League $league)
+    //**
+
+    public function __construct(League $league, string $teamName, string $teamStrip)
     {
         $this->league = $league;
+        $this->teamName = $teamName;
+        $this->teamStrip = $teamStrip;
     }
 
     /**
