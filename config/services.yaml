@@ -60,12 +60,14 @@ services:
     football-api.repository.league:
         class: FootballApi\Infrastructure\Persistence\Doctrine\LeagueRepository
         factory: ['@doctrine.orm.entity_manager', getRepository]
-        arguments: ['FootballApi\Domain\League\League']
+        arguments:
+            - 'FootballApi\Domain\League\League'
 
     football-api.repository.team:
         class: FootballApi\Infrastructure\Persistence\Doctrine\TeamRepository
         factory: ['@doctrine.orm.entity_manager', getRepository]
-        arguments: ['FootballApi\Domain\Team\Team']
+        arguments:
+            - 'FootballApi\Domain\Team\Team'
 
     football-api.persistence.persister:
         class: FootballApi\Infrastructure\Persistence\Doctrine\Persister
@@ -75,9 +77,10 @@ services:
     football-api.query.bus:
         class: FootballApi\Infrastructure\Query\QueryBus
         arguments:
-            [
+            - map:
               FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery: '@football-api.query-executor.get-teams-in-league'
-            ]
+              FootballApi\Domain\Team\Query\GetTeamByIdQuery: '@football-api.query-executor.get-team-by-id'
+
 
     football-api.command.bus:
         class: FootballApi\Infrastructure\Command\CommandBus
@@ -88,6 +91,11 @@ services:
 
     football-api.query-executor.get-teams-in-league:
         class: FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor
+        arguments:
+           - '@football-api.repository.team'
+
+    football-api.query-executor.get-team-by-id:
+        class: FootballApi\Domain\Team\Query\GetTeamByIdQueryExecutor
         arguments:
            - '@football-api.repository.team'
 

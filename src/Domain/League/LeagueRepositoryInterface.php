@@ -5,5 +5,5 @@ namespace FootballApi\Domain\League;
 
 interface LeagueRepositoryInterface
 {
-    public function findOneById(int $leagueId):?League;
+    public function findOneById(string $leagueId):?League;
 }

@@ -5,9 +5,13 @@ namespace FootballApi\Domain\Team\Command;
 
 use FootballApi\Domain\Command\CommandInterface;
 use FootballApi\Domain\League\League;
+use FootballApi\Domain\UuidInterface;
 
 class CreateTeamCommand implements CommandInterface
 {
+
+    /** @var UuidInterface $teamId */
+    private $teamId;
 
     /** @var League $league */
     private $league;
@@ -18,10 +22,9 @@ class CreateTeamCommand implements CommandInterface
     /** @var string $teamStrip */
     private $teamStrip;
 
-    //**
-
-    public function __construct(League $league, string $teamName, string $teamStrip)
+    public function __construct(UuidInterface $teamId, League $league, string $teamName, string $teamStrip)
     {
+        $this->teamId = $teamId;
         $this->league = $league;
         $this->teamName = $teamName;
         $this->teamStrip = $teamStrip;
@@ -50,4 +53,13 @@ class CreateTeamCommand implements CommandInterface
     {
         return $this->league;
     }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getTeamId(): UuidInterface
+    {
+        return $this->teamId;
+    }
+
 }

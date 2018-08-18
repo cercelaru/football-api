@@ -7,6 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FootballApi\Domain\League\League;
+use FootballApi\Infrastructure\Uuid;
 
 class LeaguesFixture extends Fixture implements ORMFixtureInterface
 {
@@ -14,7 +15,8 @@ class LeaguesFixture extends Fixture implements ORMFixtureInterface
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 10; $i++) {
-            $league = new League($i, sprintf('League %d', $i));
+            $id = new Uuid();
+            $league = new League($id, sprintf('League %d', $i));
             $this->setReference(sprintf('league%d', $i), $league);
             $manager->persist($league);
         }

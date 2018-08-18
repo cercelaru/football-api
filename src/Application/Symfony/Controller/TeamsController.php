@@ -8,7 +8,9 @@ use FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator;
 use FootballApi\Domain\Command\CommandBusInterface;
 use FootballApi\Domain\Query\QueryBusInterface;
 use FootballApi\Domain\Team\Command\CreateTeamCommand;
+use FootballApi\Domain\Team\Query\GetTeamByIdQuery;
 use FootballApi\Domain\Team\Query\GetTeamsInLeagueQuery;
+use FootballApi\Infrastructure\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,13 +70,20 @@ class TeamsController extends Controller
     {
         $requestParameters = $this->createTeamRequestValidator->getValidRequestParameters($request);
 
+        $teamId = new Uuid();
         $this->commandBus->handle(
             new CreateTeamCommand(
+                $teamId,
                 $requestParameters['league'],
                 $requestParameters['teamName'],
                 $requestParameters['teamStrip']
             )
         );
-        die('after');
+
+        $team = $this->queryBus->execute(new GetTeamByIdQuery($teamId));
+
+        echo $team->getName();die;
+
+
     }
 }

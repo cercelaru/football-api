@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace FootballApi\Domain\Team;
 
 use FootballApi\Domain\League\League;
+use FootballApi\Domain\UuidInterface;
 use JsonSerializable;
 
 class Team implements JsonSerializable
 {
 
-    /** @var int $id */
+    /** @var UuidInterface $id */
     private $id;
 
     /** @var string $name */
@@ -24,27 +25,23 @@ class Team implements JsonSerializable
     /**
      * Team constructor.
      *
+     * @param UuidInterface $id
      * @param string $name
      * @param string $strip
      * @param League $league
-     * @param int|null $id
      */
-    public function __construct(string $name, string $strip, League $league, int $id = null)
-    {
+    public function __construct(UuidInterface $id, string $name, string $strip, League $league)
+    { echo $id.' ';
+        $this->id = $id;
         $this->name = $name;
         $this->strip = $strip;
         $this->league = $league;
-
-        if (null !== $id)
-        {
-            $this->id = $id;
-        }
     }
 
     /**
-     * @return int
+     * @return UuidInterface
      */
-    public function getId(): int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }

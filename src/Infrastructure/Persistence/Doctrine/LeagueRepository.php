@@ -9,12 +9,13 @@ use FootballApi\Domain\League\LeagueRepositoryInterface;
 
 class LeagueRepository extends EntityRepository implements LeagueRepositoryInterface
 {
+
     /**
-     * @param int $leagueId
+     * @param string $leagueId
      *
      * @return League|null
      */
-    public function findOneById(int $leagueId): ?League
+    public function findOneById(string $leagueId): ?League
     {
         return $this->find($leagueId);
     }

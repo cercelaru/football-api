@@ -6,11 +6,12 @@ namespace FootballApi\Domain\League;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FootballApi\Domain\Team\Team;
+use FootballApi\Domain\UuidInterface;
 
 class League
 {
 
-    /** @var int $id */
+    /** @var UuidInterface $id */
     private $id;
 
     /** @var string $name */
@@ -19,23 +20,18 @@ class League
     /** @var ArrayCollection $teams */
     private $teams;
 
-    /**
-     * League constructor.
-     *
-     * @param int $id
-     * @param string $name
-     */
-    public function __construct(int $id, string $name)
+
+    public function __construct(UuidInterface $uuid, string $name)
     {
-        $this->id = $id;
+        $this->id = $uuid;
         $this->name = $name;
         $this->teams = new ArrayCollection();
     }
 
     /**
-     * @return int
+     * @return UuidInterface
      */
-    public function getId(): int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }

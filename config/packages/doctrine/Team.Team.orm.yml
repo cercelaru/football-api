@@ -7,9 +7,9 @@ FootballApi\Domain\Team\Team:
       columns: [ name ]
   id:
     id:
-      type: integer
+      type: guid
       generator:
-        strategy: AUTO
+        strategy: UUID
   fields:
     name:
       type: string

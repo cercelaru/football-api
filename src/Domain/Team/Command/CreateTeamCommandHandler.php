@@ -7,6 +7,7 @@ use FootballApi\Domain\Command\CommandHandlerInterface;
 use FootballApi\Domain\Command\CommandInterface;
 use FootballApi\Domain\Persistence\PersisterInterface;
 use FootballApi\Domain\Team\Team;
+use FootballApi\Infrastructure\Uuid;
 use LogicException;
 
 class CreateTeamCommandHandler implements CommandHandlerInterface
@@ -32,7 +33,12 @@ class CreateTeamCommandHandler implements CommandHandlerInterface
     {
         $this->validateCommand($command);
 
-        $team = new Team($command->getTeamName(), $command->getTeamStrip(), $command->getLeague());
+        $team = new Team(
+            $command->getTeamId(),
+            $command->getTeamName(),
+            $command->getTeamStrip(),
+            $command->getLeague()
+        );
         $this->persister->persist($team);
         $this->persister->flush();
     }
