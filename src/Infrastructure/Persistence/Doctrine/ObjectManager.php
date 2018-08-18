@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace FootballApi\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use FootballApi\Domain\Persistence\PersisterInterface;
+use FootballApi\Domain\Persistence\ObjectManagerInterface;
 
-class Persister implements PersisterInterface
+class ObjectManager implements ObjectManagerInterface
 {
     /** @var EntityManager $entityManager */
     private $entityManager;
 
     /**
-     * Persister constructor.
+     * ObjectManager constructor.
      *
      * @param EntityManager $entityManager
      */
@@ -38,5 +38,15 @@ class Persister implements PersisterInterface
     public function flush(): void
     {
         $this->entityManager->flush();
+    }
+
+    public function update(object $entity): void
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function remove(object $entity): void
+    {
+        $this->entityManager->remove($entity);
     }
 }

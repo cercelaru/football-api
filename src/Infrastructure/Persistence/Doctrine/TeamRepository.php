@@ -16,13 +16,18 @@ class TeamRepository extends EntityRepository implements TeamRepositoryInterface
      *
      * @return array
      */
-    public function findAllTeamsInLeague(League $league):array
+    public function findAllTeamsInLeague(League $league): array
     {
         return $this->findBy(['league' => $league]);
     }
 
     public function findTeamById(UuidInterface $uuid): ?Team
-    {  echo($uuid);die;
+    {
         return $this->find($uuid);
+    }
+
+    public function findTeamByName(string $name): ?Team
+    {
+        return $this->findOneBy(['name' => $name]);
     }
 }

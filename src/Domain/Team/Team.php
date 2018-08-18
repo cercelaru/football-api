@@ -5,6 +5,7 @@ namespace FootballApi\Domain\Team;
 
 use FootballApi\Domain\League\League;
 use FootballApi\Domain\UuidInterface;
+use FootballApi\Infrastructure\Uuid;
 use JsonSerializable;
 
 class Team implements JsonSerializable
@@ -31,7 +32,7 @@ class Team implements JsonSerializable
      * @param League $league
      */
     public function __construct(UuidInterface $id, string $name, string $strip, League $league)
-    { echo $id.' ';
+    {
         $this->id = $id;
         $this->name = $name;
         $this->strip = $strip;
@@ -40,9 +41,14 @@ class Team implements JsonSerializable
 
     /**
      * @return UuidInterface
+     * @throws \Exception
      */
     public function getId(): UuidInterface
     {
+        if (is_string($this->id)) {
+            return new Uuid($this->id);
+        }
+
         return $this->id;
     }
 
@@ -109,7 +115,7 @@ class Team implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
+            'id' => (string)$this->id,
             'name' => $this->name,
             'strip' => $this->strip
         ];

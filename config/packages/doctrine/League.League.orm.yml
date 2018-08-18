@@ -8,8 +8,6 @@ FootballApi\Domain\League\League:
   id:
     id:
       type: guid
-      generator:
-        strategy: UUID
   fields:
     name:
       type: string
@@ -19,5 +17,5 @@ FootballApi\Domain\League\League:
     teams:
       targetEntity: FootballApi\Domain\Team\Team
       mappedBy: league
-      cascade: ["persist", "merge"]
+      cascade: ["persist", "merge", "remove"]
       onDelete: CASCADE

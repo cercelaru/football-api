@@ -4,8 +4,26 @@ get-teams-in-league:
         _controller: football-api.controller.teams::getTeamsInLeague
     methods:  [GET]
 
+update-team:
+    path: /teams/{teamId}
+    defaults:
+        _controller: football-api.controller.teams::updateTeam
+    methods:  [PUT]
+
 create-team:
     path: /leagues/{leagueId}/teams
     defaults:
         _controller: football-api.controller.teams::createTeam
+    methods:  [POST]
+
+delete-league:
+    path: /leagues/{leagueId}
+    defaults:
+        _controller: football-api.controller.leagues::deleteLeague
+    methods:  [DELETE]
+
+create-token:
+    path: /tokens
+    defaults:
+        _controller: football-api.controller.tokens::createToken
     methods:  [POST]

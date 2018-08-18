@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace FootballApi\Domain\League;
 
+use FootballApi\Domain\UuidInterface;
+
 interface LeagueRepositoryInterface
 {
-    public function findOneById(string $leagueId):?League;
+    public function findLeagueById(UuidInterface $leagueId): ?League;
 }

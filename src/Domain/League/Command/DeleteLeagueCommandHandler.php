@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FootballApi\Domain\Team\Command;
+namespace FootballApi\Domain\League\Command;
 
 use FootballApi\Domain\Command\CommandHandlerInterface;
 use FootballApi\Domain\Command\CommandInterface;
 use FootballApi\Domain\Persistence\ObjectManagerInterface;
-use FootballApi\Domain\Team\Team;
 use LogicException;
 
-class CreateTeamCommandHandler implements CommandHandlerInterface
+class DeleteLeagueCommandHandler implements CommandHandlerInterface
 {
 
     /** @var ObjectManagerInterface $objectManager */
@@ -32,13 +31,7 @@ class CreateTeamCommandHandler implements CommandHandlerInterface
     {
         $this->validateCommand($command);
 
-        $team = new Team(
-            $command->getTeamId(),
-            $command->getTeamName(),
-            $command->getTeamStrip(),
-            $command->getLeague()
-        );
-        $this->objectManager->persist($team);
+        $this->objectManager->remove($command->getLeague());
         $this->objectManager->flush();
     }
 
@@ -49,7 +42,7 @@ class CreateTeamCommandHandler implements CommandHandlerInterface
      */
     public function validateCommand(CommandInterface $command): bool
     {
-        if (!$command instanceof CreateTeamCommand) {
+        if (!$command instanceof DeleteLeagueCommand) {
             throw new LogicException(sprintf('Command class not supported : %s', get_class($command)));
         }
 

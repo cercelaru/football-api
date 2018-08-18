@@ -8,8 +8,6 @@ FootballApi\Domain\Team\Team:
   id:
     id:
       type: guid
-      generator:
-        strategy: UUID
   fields:
     name:
       type: string

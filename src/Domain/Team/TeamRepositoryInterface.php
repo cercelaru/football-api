@@ -11,4 +11,6 @@ interface TeamRepositoryInterface
     public function findAllTeamsInLeague(League $league):array;
 
     public function findTeamById(UuidInterface $uuid):?Team;
+
+    public function findTeamByName(string $name): ?Team;
 }

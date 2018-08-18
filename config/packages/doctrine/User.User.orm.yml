@@ -1,0 +1,19 @@
+FootballApi\Domain\User\User:
+  type: entity
+  table: users
+  repositoryClass: FootballApi\Infrastructure\Persistence\Doctrine\UserRepository
+  uniqueConstraints:
+    name_idx:
+      columns: [ username ]
+  id:
+    id:
+      type: guid
+  fields:
+    username:
+      type: string
+      length: 255
+      nullable: false
+    password:
+      type: string
+      length: 60
+      nullable: false

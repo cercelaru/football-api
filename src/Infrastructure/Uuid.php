@@ -14,9 +14,21 @@ class Uuid implements UuidInterface
      */
     private $ramseyUuid;
 
-    public function __construct()
+    /**
+     * Uuid constructor.
+     *
+     * @param string|null $string
+     *
+     * @throws \Exception
+     */
+    public function __construct(string $string = null)
     {
-        $this->ramseyUuid = RamseyUuid::uuid4();
+        if ($string) {
+            $uuid = RamseyUuid::fromString($string);
+        } else {
+            $uuid = RamseyUuid::uuid4();
+        }
+        $this->ramseyUuid = $uuid;
     }
 
     /**

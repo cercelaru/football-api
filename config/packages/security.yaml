@@ -1,0 +1,22 @@
+security:
+    providers:
+      jwt_user_provider:
+        id: "football-api.auth.jwtUserProvider"
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            guard:
+                provider: "jwt_user_provider"
+                entry_point: "football-api.auth.jwtAuthenticator"
+                authenticators:
+                    - "football-api.auth.jwtAuthenticator"
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/tokens, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }
+

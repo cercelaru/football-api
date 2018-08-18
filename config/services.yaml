@@ -39,21 +39,55 @@ services:
         tags:
             - { name: 'doctrine.fixture.orm' }
 
+    football-api.fixture.users:
+            class: FootballApi\Infrastructure\Persistence\Fixtures\UsersFixture
+            tags:
+                - { name: 'doctrine.fixture.orm' }
+
     football-api.controller.teams:
         class: FootballApi\Application\Symfony\Controller\TeamsController
         arguments:
             - '@football-api.request-validator.get-teams-in-league'
             - '@football-api.request-validator.create-team'
+            - '@football-api.request-validator.update-team'
             - '@football-api.query.bus'
             - '@football-api.command.bus'
 
+    football-api.controller.leagues:
+        class: FootballApi\Application\Symfony\Controller\LeaguesController
+        arguments:
+            - '@football-api.command.bus'
+            - '@football-api.request-validator.delete-league'
+
+    football-api.controller.tokens:
+        class: FootballApi\Application\Symfony\Controller\Auth\TokensController
+        arguments:
+            - '@football-api.request-validator.create-token'
+            - '@football-api.auth.tokenProvider'
+
     football-api.request-validator.get-teams-in-league:
-        class: FootballApi\Application\Symfony\Validator\GetTeamsInLeagueRequestValidator
+        class: FootballApi\Application\Symfony\Request\GetTeamsInLeagueRequestValidator
         arguments:
             - '@football-api.repository.league'
 
+    football-api.request-validator.create-token:
+        class: FootballApi\Application\Symfony\Request\CreateTokenRequestValidator
+        arguments:
+            - '@football-api.repository.user'
+
     football-api.request-validator.create-team:
-        class: FootballApi\Application\Symfony\Validator\CreateTeamRequestValidator
+        class: FootballApi\Application\Symfony\Request\CreateTeamRequestValidator
+        arguments:
+            - '@football-api.repository.league'
+            - '@football-api.repository.team'
+
+    football-api.request-validator.update-team:
+         class: FootballApi\Application\Symfony\Request\UpdateTeamRequestValidator
+         arguments:
+             - '@football-api.repository.team'
+
+    football-api.request-validator.delete-league:
+        class: FootballApi\Application\Symfony\Request\DeleteLeagueRequestValidator
         arguments:
             - '@football-api.repository.league'
 
@@ -69,8 +103,14 @@ services:
         arguments:
             - 'FootballApi\Domain\Team\Team'
 
-    football-api.persistence.persister:
-        class: FootballApi\Infrastructure\Persistence\Doctrine\Persister
+    football-api.repository.user:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\UserRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - 'FootballApi\Domain\User\User'
+
+    football-api.persistence.object-manager:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\ObjectManager
         arguments:
              - '@doctrine.orm.default_entity_manager'
 
@@ -85,9 +125,11 @@ services:
     football-api.command.bus:
         class: FootballApi\Infrastructure\Command\CommandBus
         arguments:
-            [
+            - map:
               FootballApi\Domain\Team\Command\CreateTeamCommand: '@football-api.command-handler.create-team'
-            ]
+              FootballApi\Domain\Team\Command\UpdateTeamCommand: '@football-api.command-handler.update-team'
+              FootballApi\Domain\League\Command\DeleteLeagueCommand: '@football-api.command-handler.delete-league'
+
 
     football-api.query-executor.get-teams-in-league:
         class: FootballApi\Domain\Team\Query\GetTeamsInLeagueQueryExecutor
@@ -102,5 +144,33 @@ services:
     football-api.command-handler.create-team:
         class: FootballApi\Domain\Team\Command\CreateTeamCommandHandler
         arguments:
-           - '@football-api.persistence.persister'
+           - '@football-api.persistence.object-manager'
 
+    football-api.command-handler.update-team:
+        class: FootballApi\Domain\Team\Command\UpdateTeamCommandHandler
+        arguments:
+           - '@football-api.persistence.object-manager'
+
+    football-api.command-handler.delete-league:
+        class: FootballApi\Domain\League\Command\DeleteLeagueCommandHandler
+        arguments:
+           - '@football-api.persistence.object-manager'
+
+    football-api.event-listener.exception:
+        class: FootballApi\Application\Symfony\EventListener\ExceptionListener
+        tags:
+           - { name: kernel.event_listener, event: kernel.exception }
+
+    football-api.auth.jwtAuthenticator:
+        class: FootballApi\Application\Auth\JwtAuthenticator
+        arguments:
+            - '@football-api.auth.jwtUserProvider'
+            - '%env(JWT_SECRET_KEY)%'
+
+    football-api.auth.jwtUserProvider:
+        class: FootballApi\Application\Auth\JwtUserProvider
+
+    football-api.auth.tokenProvider:
+        class: FootballApi\Infrastructure\Auth\TokenProvider
+        arguments:
+            - '%env(JWT_SECRET_KEY)%'
