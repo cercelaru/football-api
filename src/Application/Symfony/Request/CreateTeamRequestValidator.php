@@ -57,7 +57,7 @@ class CreateTeamRequestValidator
 
         foreach ($requiredPayloadParams as $requiredPayloadParam) {
             if (empty($payload[$requiredPayloadParam])) {
-                throw new BadRequestHttpException(sprintf('%s is invalid', $requiredPayloadParam));
+                throw new BadRequestHttpException(sprintf('%s is empty', $requiredPayloadParam));
             }
         }
 
