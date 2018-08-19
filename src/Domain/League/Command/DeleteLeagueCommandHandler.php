@@ -5,23 +5,23 @@ namespace FootballApi\Domain\League\Command;
 
 use FootballApi\Domain\Command\CommandHandlerInterface;
 use FootballApi\Domain\Command\CommandInterface;
-use FootballApi\Domain\Persistence\ObjectManagerInterface;
+use FootballApi\Domain\Persistence\PersisterInterface;
 use LogicException;
 
 class DeleteLeagueCommandHandler implements CommandHandlerInterface
 {
 
-    /** @var ObjectManagerInterface $objectManager */
-    private $objectManager;
+    /** @var PersisterInterface $persister */
+    private $persister;
 
     /**
      * CreateTeamCommandHandler constructor.
      *
-     * @param ObjectManagerInterface $objectManager
+     * @param PersisterInterface $persister
      */
-    public function __construct(ObjectManagerInterface $objectManager)
+    public function __construct(PersisterInterface $persister)
     {
-        $this->objectManager = $objectManager;
+        $this->persister = $persister;
     }
 
     /**
@@ -31,8 +31,8 @@ class DeleteLeagueCommandHandler implements CommandHandlerInterface
     {
         $this->validateCommand($command);
 
-        $this->objectManager->remove($command->getLeague());
-        $this->objectManager->flush();
+        $this->persister->remove($command->getLeague());
+        $this->persister->flush();
     }
 
     /**

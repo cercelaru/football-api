@@ -5,23 +5,23 @@ namespace FootballApi\Domain\Team\Command;
 
 use FootballApi\Domain\Command\CommandHandlerInterface;
 use FootballApi\Domain\Command\CommandInterface;
-use FootballApi\Domain\Persistence\ObjectManagerInterface;
+use FootballApi\Domain\Persistence\PersisterInterface;
 use LogicException;
 
 class UpdateTeamCommandHandler implements CommandHandlerInterface
 {
 
-    /** @var ObjectManagerInterface $objectManager */
-    private $objectManager;
+    /** @var PersisterInterface $perister */
+    private $perister;
 
     /**
      * CreateTeamCommandHandler constructor.
      *
-     * @param ObjectManagerInterface $objectManager
+     * @param PersisterInterface $persister
      */
-    public function __construct(ObjectManagerInterface $objectManager)
+    public function __construct(PersisterInterface $persister)
     {
-        $this->objectManager = $objectManager;
+        $this->perister = $persister;
     }
 
     /**
@@ -35,7 +35,7 @@ class UpdateTeamCommandHandler implements CommandHandlerInterface
         $team->setName($command->getNewTeamName());
         $team->setStrip($command->getNewTeamStrip());
 
-        $this->objectManager->flush();
+        $this->perister->flush();
     }
 
     /**

@@ -24,6 +24,9 @@ class CommandBus implements CommandBusInterface
         $this->commandToHandlerMap = $commandToHandlerMap;
     }
 
+    /**
+     * @param CommandInterface $command
+     */
     public function handle(CommandInterface $command): void
     {
         $commandClass = get_class($command);

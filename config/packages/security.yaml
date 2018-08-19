@@ -8,6 +8,7 @@ security:
             security: false
         main:
             anonymous: true
+            stateless: true
             guard:
                 provider: "jwt_user_provider"
                 entry_point: "football-api.auth.jwtAuthenticator"

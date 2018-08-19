@@ -109,8 +109,8 @@ services:
         arguments:
             - 'FootballApi\Domain\User\User'
 
-    football-api.persistence.object-manager:
-        class: FootballApi\Infrastructure\Persistence\Doctrine\ObjectManager
+    football-api.persistence.persister:
+        class: FootballApi\Infrastructure\Persistence\Doctrine\Persister
         arguments:
              - '@doctrine.orm.default_entity_manager'
 
@@ -144,17 +144,17 @@ services:
     football-api.command-handler.create-team:
         class: FootballApi\Domain\Team\Command\CreateTeamCommandHandler
         arguments:
-           - '@football-api.persistence.object-manager'
+           - '@football-api.persistence.persister'
 
     football-api.command-handler.update-team:
         class: FootballApi\Domain\Team\Command\UpdateTeamCommandHandler
         arguments:
-           - '@football-api.persistence.object-manager'
+           - '@football-api.persistence.persister'
 
     football-api.command-handler.delete-league:
         class: FootballApi\Domain\League\Command\DeleteLeagueCommandHandler
         arguments:
-           - '@football-api.persistence.object-manager'
+           - '@football-api.persistence.persister'
 
     football-api.event-listener.exception:
         class: FootballApi\Application\Symfony\EventListener\ExceptionListener

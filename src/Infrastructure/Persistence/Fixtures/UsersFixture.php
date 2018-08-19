@@ -13,7 +13,8 @@ class UsersFixture extends Fixture implements ORMFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $user = new User(new Uuid(), 'testuser', password_hash('testpass', PASSWORD_BCRYPT));
+        $user = new User(new Uuid(), 'testuser');
+        $user->setPassword(password_hash('testpass', PASSWORD_BCRYPT));
         $manager->persist($user);
 
         $manager->flush();
