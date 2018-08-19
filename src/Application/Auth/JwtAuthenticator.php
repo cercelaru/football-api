@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
-
 class JwtAuthenticator extends AbstractGuardAuthenticator
 {
 
@@ -51,7 +50,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      *
      * @return bool
      */
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         $authHeader = $request->headers->has('Authorization');
         if ($authHeader) {
@@ -66,7 +65,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      *
      * @return string
      */
-    private function extractAuthHeader(Request $request)
+    private function extractAuthHeader(Request $request): string
     {
         $authHeader = trim($request->headers->get('Authorization', '', true));
         if (strpos($authHeader, 'Bearer') === 0) {
@@ -85,7 +84,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      * @return array
      *
      */
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $error = null;
 
@@ -111,7 +110,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         return $jwtPayload;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
         try {
             return $this->jwtUserProvider->createFromJwtPayload($credentials);
@@ -126,7 +125,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      *
      * @return bool
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return true;
     }
@@ -149,7 +148,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      *
      * @return JsonResponse
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         return new JsonResponse(
             [
@@ -165,13 +164,13 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     /**
      * Called when authentication is needed, but it's not sent
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): JsonResponse
     {
         return new JsonResponse(
             [
                 'error' => [
                     'code' => Response::HTTP_FORBIDDEN,
-                    'message' => $authException->getMessage()
+                    'message' => 'Authentication Required'
                 ]
             ],
             Response::HTTP_UNAUTHORIZED
@@ -181,7 +180,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     /**
      * @return bool
      */
-    public function supportsRememberMe()
+    public function supportsRememberMe(): bool
     {
         return false;
     }

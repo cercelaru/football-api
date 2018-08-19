@@ -117,6 +117,6 @@ class TeamsController extends Controller
         );
         $team = $this->queryBus->execute(new GetTeamByIdQuery($team->getId()));
 
-        return new JsonResponse(['team' => $team], Response::HTTP_CREATED);
+        return new JsonResponse(['team' => $team]);
     }
 }
