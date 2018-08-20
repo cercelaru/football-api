@@ -36,6 +36,7 @@ Example Payload :
 
 Example URL : 
 http://127.0.0.1:8001/tokens
+
 ---
 #### Get teams in league
 URL: **/leagues/:leagueId/teams**
